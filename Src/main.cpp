@@ -1,5 +1,8 @@
 #include <Src/ShaderClass/ShaderClass.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -91,6 +94,18 @@ int main() {
         std::cerr << err.what() << '\n';
     }
     PrepareSetOfVertices(&VAO, &VBO, &EBO, vertices, indices, sizeof(vertices), sizeof(indices));
+
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load("Image/container.jpg", &width, &height, &nrChannels, nullptr);
+
+    unsigned int texture;
+    glGenTextures(1, &texture);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
 //    PrepareTriangleVAOInterpolated(&VAO1, &VBO1, vertices1, sizeof(vertices1));
 
     //PrepareTriangleVAO(&VAO, &VBO, vertices, sizeof(vertices));
@@ -108,7 +123,7 @@ int main() {
 //        DrawSetOfVertices(&VAO, &shader.GetId());
         shader.Use();
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 //        DrawTriangle(&VAO1, &shaderProgramSecond);
 //
 //        DrawTriangle(&VAO1, &shaderProgramThird);

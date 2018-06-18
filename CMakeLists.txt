@@ -9,6 +9,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 #
 include_directories(${path_to_glad}/include)
 
+include_directories("~/Programming/Includes/stb")
+
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-lglfw -ldl")
 
 add_library(GLAD ${path_to_glad}/src/glad.c)
